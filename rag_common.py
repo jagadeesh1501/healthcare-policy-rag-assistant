@@ -11,30 +11,67 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+
 # --------------------------------------------------
 # Configuration
 # --------------------------------------------------
 
-load_dotenv()
+# Load .env from the same directory as this Python file
+BASE_DIR = Path(__file__).resolve().parent
+ENV_FILE = BASE_DIR / ".env"
 
-PDF_DIR = Path(os.getenv("PDF_DIR", "./data"))
-VECTOR_DIR = Path(os.getenv("VECTOR_DIR", "./vectorstore"))
+load_dotenv(dotenv_path=ENV_FILE, override=False)
+
+PDF_DIR = Path(os.getenv("PDF_DIR", str(BASE_DIR / "data")))
+VECTOR_DIR = Path(os.getenv("VECTOR_DIR", str(BASE_DIR / "vectorstore")))
+
+# Resolve relative paths against the project directory
+if not PDF_DIR.is_absolute():
+    PDF_DIR = BASE_DIR / PDF_DIR
+
+if not VECTOR_DIR.is_absolute():
+    VECTOR_DIR = BASE_DIR / VECTOR_DIR
 
 EMBEDDING_MODEL = os.getenv(
     "EMBEDDING_MODEL",
     "sentence-transformers/all-MiniLM-L6-v2",
 )
 
-# Keep the requested Gemini model
 GEMINI_MODEL = os.getenv(
     "GEMINI_MODEL",
-    "gemini-3.8-flash",
+    "gemini-2.5-flash",
 )
 
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "900"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "150"))
 RETRIEVER_K = int(os.getenv("RETRIEVER_K", "5"))
 RERANK_TOP_N = int(os.getenv("RERANK_TOP_N", "3"))
+
+
+# --------------------------------------------------
+# API key validation
+# --------------------------------------------------
+
+def get_google_api_key():
+    """Read and validate the Gemini API key without exposing it."""
+
+    # Also support an environment variable set directly in the terminal.
+    # Reload .env in case it was created or updated after startup.
+    load_dotenv(dotenv_path=ENV_FILE, override=False)
+
+    api_key = os.getenv("GOOGLE_API_KEY", "").strip()
+
+    if not api_key:
+        raise EnvironmentError(
+            "GOOGLE_API_KEY is missing.\n"
+            f"Expected .env file at: {ENV_FILE}\n"
+            "Add this line to that file:\n"
+            "GOOGLE_API_KEY=your_actual_gemini_api_key\n"
+            "Then restart Streamlit."
+        )
+
+    return api_key
+
 
 # --------------------------------------------------
 # Document processing
@@ -68,7 +105,7 @@ def load_chunks():
     if not pdfs:
         raise FileNotFoundError(
             f"No PDFs found in {PDF_DIR.resolve()}. "
-            "Put policy PDFs in data/."
+            "Put policy PDFs in the data/ folder."
         )
 
     pages = []
@@ -120,18 +157,15 @@ def get_embeddings():
 
 @lru_cache(maxsize=1)
 def get_llm():
-    """Initialize the Gemini client once per process."""
+    """Initialize Gemini once per process."""
 
-    if not os.getenv("GOOGLE_API_KEY"):
-        raise EnvironmentError(
-            "GOOGLE_API_KEY is missing. "
-            "Add your API key to the .env file."
-        )
+    api_key = get_google_api_key()
 
-    print(f"Using Gemini model: {GEMINI_MODEL}")
+    print(f"Initializing Gemini model: {GEMINI_MODEL}")
 
     return ChatGoogleGenerativeAI(
         model=GEMINI_MODEL,
+        google_api_key=api_key,
         temperature=0,
         timeout=60,
         max_retries=1,
