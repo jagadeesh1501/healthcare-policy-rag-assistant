@@ -1,0 +1,20 @@
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+
+.streamlit/secrets.toml
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Generated vector databases and indexes
+vectorstore/
+faiss_index/
+chroma_db/
+
+# Local logs
+*.log

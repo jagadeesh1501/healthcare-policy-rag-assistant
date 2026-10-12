@@ -1,0 +1,22 @@
+[
+{"question":"What does Cashless Facility mean?","expected_answer":"Insurer pays covered treatment costs directly to a network provider to the extent pre-authorization is approved."},
+{"question":"How early should I request pre-authorisation for planned domestic hospitalization?","expected_answer":"At least 48 hours before planned hospitalization."},
+{"question":"Within how long should the insurer be informed about emergency domestic cashless hospitalization?","expected_answer":"In writing immediately, within 24 hours of hospitalization, according to the cashless guide."},
+{"question":"Does pre-authorisation guarantee that all hospital costs will be paid?","expected_answer":"No; the claim is reviewed under policy terms and conditions."},
+{"question":"Is cashless treatment available at every hospital?","expected_answer":"No, only at network hospitals."},
+{"question":"When should domestic reimbursement claim documents be submitted after discharge?","expected_answer":"Within 30 days of discharge."},
+{"question":"Name some documents needed for a domestic reimbursement claim.","expected_answer":"Claim form, discharge summary, final bill and receipt, investigation bills/reports and other applicable documents."},
+{"question":"What initial waiting period for illness is listed in the sample schedule?","expected_answer":"30 days for any illness except accidents, subject to wording and continuity conditions."},
+{"question":"What waiting period is listed for pre-existing diseases in the sample benefit guide?","expected_answer":"36 months of continuous coverage from the first Global Health Care policy, according to the sample guide."},
+{"question":"What waiting period is listed for specified diseases and procedures?","expected_answer":"24 months, not applicable to accidents, according to the sample guide."},
+{"question":"How many days of pre-hospitalization expenses are shown for domestic cover in the sample benefit table?","expected_answer":"60 days."},
+{"question":"How many days of post-hospitalization expenses are shown for domestic cover in the sample benefit table?","expected_answer":"180 days."},
+{"question":"What is the sample domestic in-patient limit for Imperial Plus?","expected_answer":"INR 11,200,000 in the fictional sample schedule; actual schedules may differ."},
+{"question":"What is the sample international in-patient limit for Imperial Plus USD 300,000?","expected_answer":"USD 300,000 in the fictional sample schedule; actual schedules may differ."},
+{"question":"What is the claim settlement timeline when no investigation is needed?","expected_answer":"Within 30 days of receiving the last necessary document, according to the claim guide."},
+{"question":"What happens if a claim requires investigation?","expected_answer":"Investigation should be started and completed within 30 days; settlement or rejection within 45 days of the last necessary document, according to the guide."},
+{"question":"Are non-medical items such as laundry and telephone charges payable?","expected_answer":"They are listed as non-payable examples in the claim guide."},
+{"question":"What is the international helpline listed in the cashless guide?","expected_answer":"+353 1 630 1301, available 24/7, according to the guide."},
+{"question":"What is the sample optional dental plan maximum benefit for Imperial Plus?","expected_answer":"USD 2,300 in the sample benefit table, subject to actual terms and schedule."},
+{"question":"Can the chatbot guarantee that a particular claim will be approved?","expected_answer":"No. It can explain policy wording but cannot guarantee a claim decision."}
+]
