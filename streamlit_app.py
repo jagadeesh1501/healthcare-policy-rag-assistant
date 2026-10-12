@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 from v4_reranking import load_or_create_index, ask
@@ -20,55 +19,61 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f5f8fc;
+        background:
+            radial-gradient(ellipse at 0% 0%, rgba(37,99,235,.10), transparent 32%),
+            radial-gradient(ellipse at 100% 0%, rgba(13,148,136,.09), transparent 30%),
+            #f4f7fb;
+        color: #172b47;
     }
-
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #102744 0%, #174a78 65%, #117c82 100%);
+    }
+    [data-testid="stSidebar"] * { color: #eef6ff !important; }
+    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] { color: #c6d8ec !important; }
+    .block-container { max-width: 1400px; padding-top: 1.6rem; padding-bottom: 2.5rem; }
     .main-header {
-        background: linear-gradient(120deg, #164e8c, #2563b8);
-        padding: 24px 28px;
-        border-radius: 14px;
-        color: white;
-        margin-bottom: 22px;
+        position: relative; overflow: hidden;
+        background: linear-gradient(118deg, #102744 0%, #174a78 58%, #0f8b8b 100%);
+        padding: 38px 40px; border-radius: 24px; color: white;
+        margin-bottom: 26px; box-shadow: 0 18px 42px rgba(19,55,91,.18);
     }
-
+    .main-header:after {
+        content: ""; position: absolute; width: 260px; height: 260px;
+        border: 1px solid rgba(255,255,255,.18); border-radius: 50%;
+        right: -45px; top: -125px;
+        box-shadow: 0 0 0 28px rgba(255,255,255,.04), 0 0 0 60px rgba(255,255,255,.025);
+    }
     .main-header h1 {
-        color: white;
-        font-size: 29px;
-        margin-bottom: 7px;
+        color: white !important; font-size: clamp(2rem, 4vw, 3.1rem);
+        letter-spacing: -.04em; line-height: 1.1; margin: 0 0 12px 0;
     }
-
-    .main-header p {
-        color: #e5efff;
-        font-size: 15px;
-        margin-bottom: 0;
+    .main-header p { color: #e0edf8 !important; font-size: 1rem; line-height: 1.7; margin: 0; max-width: 850px; }
+    .info-card, .answer-card {
+        background: #fff; color: #172b47; padding: 22px;
+        border-radius: 18px; border: 1px solid #dce7f3;
+        box-shadow: 0 9px 28px rgba(29,58,92,.05); margin-bottom: 14px;
     }
-
-    .info-card {
-        background: white;
-        padding: 18px;
-        border-radius: 12px;
-        border: 1px solid #dce6f3;
-        margin-bottom: 12px;
-    }
-
-    .answer-card {
-        background: white;
-        padding: 22px;
-        border-radius: 12px;
-        border: 1px solid #dce6f3;
-    }
-
     div[data-testid="stMetric"] {
-        background: white;
-        padding: 14px;
-        border: 1px solid #dce6f3;
-        border-radius: 10px;
+        background: white; padding: 16px; border: 1px solid #dce7f3;
+        border-radius: 15px; box-shadow: 0 6px 18px rgba(29,58,92,.04);
     }
-
-    .stButton button[kind="primary"] {
-        background-color: #2563eb;
-        border-radius: 8px;
+    div[data-testid="stMetricLabel"] { color: #62738a; }
+    div[data-testid="stMetricValue"] { color: #14233b; font-weight: 800; }
+    .stButton button, .stFormSubmitButton button {
+        border-radius: 11px; font-weight: 750; min-height: 2.8rem;
+        transition: transform .15s ease, box-shadow .15s ease;
     }
+    .stButton button:hover, .stFormSubmitButton button:hover {
+        transform: translateY(-1px); box-shadow: 0 8px 18px rgba(37,99,235,.14);
+    }
+    [data-testid="stExpander"] { background: rgba(255,255,255,.9); border: 1px solid #dce7f3; border-radius: 13px; }
+    div[data-baseweb="select"] > div, .stTextArea textarea { border-radius: 12px !important; border-color: #d3dfed !important; }
+    .stMarkdown, p, label { color: #263b55; }
+    .disclaimer {
+        color: #6a5a2a; background: #fff9e9; border: 1px solid #f0dfae;
+        border-radius: 13px; padding: 13px 16px; font-size: .85rem; line-height: 1.55;
+    }
+    .footer { color: #78879a; text-align: center; padding: 18px 4px; font-size: .8rem; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -100,11 +105,11 @@ EXAMPLE_QUESTIONS = [
 st.markdown(
     """
     <div class="main-header">
-        <h1>🏥 Healthcare Policy RAG Assistant</h1>
+        <div style="color:#b8f3ed;font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px">AI · DOCUMENT INTELLIGENCE · V4</div><h1>Understand your health policy.<br>One question at a time.</h1>
         <p>
-            V4 Advanced RAG &nbsp;|&nbsp;
+            AI-POWERED POLICY EXPLORATION &nbsp;|&nbsp;
             FAISS Retrieval + Cross-Encoder Reranking
-            &nbsp;|&nbsp; Answers grounded in policy documents
+            &nbsp;|&nbsp; Evidence-led answers with source references
         </p>
     </div>
     """,
@@ -391,7 +396,11 @@ else:
 
 st.divider()
 
-st.caption(
-    "Healthcare Policy RAG Assistant | V4 | "
-    "LangChain · FAISS · Cross-Encoder · Streamlit"
+st.markdown(
+    '<div class="disclaimer"><strong>Important:</strong> Educational information only. This assistant is not an official insurer service and cannot confirm coverage or claim approval. Verify important details against the applicable policy wording and schedule.</div>',
+    unsafe_allow_html=True,
+)
+st.markdown(
+    '<div class="footer">Healthcare Policy RAG Assistant · LangChain · FAISS · Cross-Encoder · Streamlit</div>',
+    unsafe_allow_html=True,
 )
